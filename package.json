@@ -1,0 +1,23 @@
+{
+  "name": "rentdynamics",
+  "version": "1.0.0",
+  "description": "Package to help facilitate communicating with the Rent Dynamics API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RentDynamics/rentdynamics-js.git"
+  },
+  "keywords": [
+    "Rent",
+    "Dynamics"
+  ],
+  "author": "Skyler Cain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RentDynamics/rentdynamics-js/issues"
+  },
+  "homepage": "https://github.com/RentDynamics/rentdynamics-js#readme"
+}
