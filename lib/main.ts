@@ -6,7 +6,7 @@ export class RentDynamicsClient {
     private helpers: RentDynamicsClientHelpers;
     private options: RentDynamicsClientOptions;
 
-    constructor(options: RentDynamicsClientOptions){
+    constructor(options: RentDynamicsClientOptions) {
         this.options = options;
         this.helpers = new RentDynamicsClientHelpers(options);
     }
@@ -31,7 +31,7 @@ export class RentDynamicsClientOptions {
 export class RentDynamicsClientHelpers {
     private options: RentDynamicsClientOptions;
 
-    constructor(options: RentDynamicsClientOptions){
+    constructor(options: RentDynamicsClientOptions) {
         this.options = options;
     }
 
@@ -42,8 +42,7 @@ export class RentDynamicsClientHelpers {
             formattedPayload = null;
         } else if (payload !== Object(payload)) {
             formattedPayload = payload;
-        }
-        else if (Array.isArray(payload)) {
+        } else if (Array.isArray(payload)) {
             formattedPayload = [];
 
             for (let i = 0; i < payload.length; i++) {
@@ -64,20 +63,20 @@ export class RentDynamicsClientHelpers {
     }
 
     public getBaseUrl(){
-        if(this.options.development){
+        if (this.options.development) {
             return 'https://api-dev.rentdynamics.com';
         }
         return 'https://api.rentdynamics.com';
     }
 
-    public getHeaders(endpoint: string, payload?: Object){
+    public getHeaders(endpoint: string, payload?: Object) {
         let headers = new Headers();
         if (typeof payload !== "undefined") {
             payload = this.formatPayload(payload);
         }
         let timestamp = Date.now();
         let nonce = this.getNonce(timestamp, endpoint, JSON.stringify(payload));
-        if(this.options.authToken){
+        if (this.options.authToken) {
             headers.append('Authorization', 'TOKEN ' + this.options.authToken);
         }
         headers.append('x-rd-api-key', this.options.apiKey);
