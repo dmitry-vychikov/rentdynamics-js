@@ -1,9 +1,13 @@
+var PACKAGE = require('./package.json');
 const path = require('path');
 
 module.exports = {
-    entry: './dist/index.js',
+    entry: {
+      [PACKAGE.version]: './dist/index.js',
+      'latest': './dist/index.js'
+    },
     output: {
-        filename: 'rentdynamics.js',
+        filename: 'rentdynamics.[name].js',
         path: path.resolve(__dirname, 'dist'),
         library: 'RentDynamics'
     }
