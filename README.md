@@ -15,9 +15,7 @@ Include our CDN: `<script src="https://cdn.rentdynamics.com/rentdynamics.latest.
 ```js
 var options = {
   apiKey: '<insert-key-here>',
-  apiSecretKey: '<insert-secret-key-here>',
-  authToken: null,
-  development: true
+  apiSecretKey: '<insert-secret-key-here>'
 };
 var rdClient = new RentDynamics.Client(options);
 rdClient.login('<username>', '<password>').then(function(result) {
@@ -37,9 +35,7 @@ import { Client } from 'rentdynamics';
 
 let options = {
   apiKey: '<insert-key-here>',
-  apiSecretKey: '<insert-secret-key-here>',
-  authToken: null,
-  development: true
+  apiSecretKey: '<insert-secret-key-here>'
 };
 let rdClient = new Client(options);
 rdClient.login('<username>', '<password>').then((result: object) => {
@@ -61,11 +57,11 @@ rdClient.get('/data').then((result: array | object) => {
  * `service: string (default is '')`
 
 ### Client (requires a ClientOptions to be passed in)
- * `get(endpoint: string): Promise<Response>`
- * `put(endpoint: string, payload: object): Promise<Response>`
- * `post(endpoint: string, payload: object): Promise<Response>`
- * `delete(endpoint: string): Promise<Response>`
- * `login(username: string, password: string): Promise<Response>`
+ * `get(endpoint: string): Promise<any>`
+ * `put(endpoint: string, payload: object): Promise<any>`
+ * `post(endpoint: string, payload: object): Promise<any>`
+ * `delete(endpoint: string): Promise<any>`
+ * `login(username: string, password: string): Promise<any>`
 
 
 ## Testing
