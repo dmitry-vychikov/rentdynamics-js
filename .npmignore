@@ -1,0 +1,8 @@
+.circleci
+coverage
+lib
+node_modules
+npm-debug.log
+jest.config.js
+tsconfig.json
+webpack.config.js

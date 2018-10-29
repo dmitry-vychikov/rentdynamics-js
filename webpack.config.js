@@ -1,9 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './dist/main.js',
+    entry: './dist/index.js',
     output: {
         filename: 'rentdynamics.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        library: 'RentDynamics'
     }
 };

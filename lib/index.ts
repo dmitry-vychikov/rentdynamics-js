@@ -1,26 +1,72 @@
-import jsSHA from "jssha";
+import jsSHA from 'jssha';
 
 
-export class RentDynamicsClient {
+export class Client {
 
-    private helpers: RentDynamicsClientHelpers;
-    private options: RentDynamicsClientOptions;
+    private helpers: ClientHelpers;
+    private options: ClientOptions;
 
-    constructor(options: RentDynamicsClientOptions) {
+    constructor(options: ClientOptions) {
         this.options = options;
-        this.helpers = new RentDynamicsClientHelpers(options);
+        this.helpers = new ClientHelpers(options);
     }
 
-    public get(endpoint: string): Promise<Response> {
+    public get(endpoint: string): Promise<any> {
         let options:RequestInit = {};
-        options.method = "GET";
+        options.method = 'GET';
         options.headers = this.helpers.getHeaders(endpoint);
         let fullUrl = this.helpers.getBaseUrl() + endpoint;
-        return fetch(fullUrl, options);
+        return fetch(fullUrl, options).then((result: Response) => {
+          return result.ok ? result.json() : result;
+        });
     }
+
+    public put(endpoint: string, payload: object): Promise<any> {
+      let options:RequestInit = {};
+      options.method = 'PUT';
+      options.headers = this.helpers.getHeaders(endpoint, payload);
+      options.body = JSON.stringify(payload);
+      let fullUrl = this.helpers.getBaseUrl() + endpoint;
+      return fetch(fullUrl, options).then((result: Response) => {
+        return result.ok ? result.json() : result;
+      });
+    }
+
+    public post(endpoint: string, payload: object): Promise<any> {
+      let options:RequestInit = {};
+      options.method = 'POST';
+      options.headers = this.helpers.getHeaders(endpoint, payload);
+      options.body = JSON.stringify(payload);
+      let fullUrl = this.helpers.getBaseUrl() + endpoint;
+      return fetch(fullUrl, options).then((result: Response) => {
+        return result.ok ? result.json() : result;
+      });
+    }
+
+    public delete(endpoint: string): Promise<any> {
+      let options:RequestInit = {};
+      options.method = 'DELETE';
+      options.headers = this.helpers.getHeaders(endpoint);
+      let fullUrl = this.helpers.getBaseUrl() + endpoint;
+      return fetch(fullUrl, options).then((result: Response) => {
+        return result.ok ? result.json() : result;
+      });
+    }
+
+    public login(username: string, password: string): Promise<any> {
+      let shaObj = new jsSHA('SHA-1', 'TEXT');
+      shaObj.update(password);
+      password = shaObj.getHash('HEX');
+      let endpoint = '/auth/login';
+      return this.post(endpoint, { username: username, password: password }).then((result) => {
+        this.options.authToken = result.token;
+        return result;
+      });
+    }
+
 }
 
-export class RentDynamicsClientOptions {
+export class ClientOptions {
     public apiKey: string = '';
     public apiSecretKey: string = '';
     public authToken: string = '';
@@ -28,10 +74,10 @@ export class RentDynamicsClientOptions {
     public service: string = '';
 }
 
-export class RentDynamicsClientHelpers {
-    private options: RentDynamicsClientOptions;
+export class ClientHelpers {
+    private options: ClientOptions;
 
-    constructor(options: RentDynamicsClientOptions) {
+    constructor(options: ClientOptions) {
         this.options = options;
     }
 
@@ -82,6 +128,7 @@ export class RentDynamicsClientHelpers {
         headers.append('x-rd-api-key', this.options.apiKey);
         headers.append('x-rd-api-nonce', nonce);
         headers.append('x-rd-timestamp', timestamp.toString());
+        headers.append('Content-Type', 'application/json');
         return headers;
     }
 

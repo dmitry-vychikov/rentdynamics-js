@@ -1,14 +1,16 @@
 {
-  "name": "@rentdynamics/rentdynamics",
+  "name": "rentdynamics",
   "version": "1.0.0",
   "description": "Package to help facilitate communicating with the Rent Dynamics API",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "npm run tsc && npm run webpack",
     "nsp": "nsp check",
     "prepush": "npm run test",
     "test": "jest",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
