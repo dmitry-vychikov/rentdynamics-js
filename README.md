@@ -11,7 +11,11 @@
 
 
 ## CDN
-Include our CDN: `<script src="https://cdn.rentdynamics.com/rentdynamics.latest.js"></script>`
+Include jsSHA and our CDN
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
+<script src="https://cdn.rentdynamics.com/rentdynamics.latest.js"></script>
+```
 ```js
 var options = {
   apiKey: '<insert-key-here>',
@@ -72,12 +76,12 @@ rdClient.get('/data').then((result: array | object) => {
 [circleci-link]: https://circleci.com/gh/RentDynamics/rentdynamics-js
 [codecov-image]: https://codecov.io/gh/RentDynamics/rentdynamics-js/branch/master/graph/badge.svg
 [codecov-link]: https://codecov.io/gh/RentDynamics/rentdynamics-js
-[dependency-image]: https://david-dm.org/RentDynamics/rentdynamicss/status.svg
-[dependency-link]: https://david-dm.org/RentDynamics/rentdynamics
-[dev-dependency-image]: https://david-dm.org/RentDynamics/rentdynamics/dev-status.svg
-[dev-dependency-link]: https://david-dm.org/RentDynamics/rentdynamics?type=dev
-[peer-dependency-image]: https://david-dm.org/RentDynamics/rentdynamics/peer-status.svg
-[peer-dependency-link]: https://david-dm.org/RentDynamics/rentdynamics?type=peer
+[dependency-image]: https://david-dm.org/RentDynamics/rentdynamics-js/status.svg
+[dependency-link]: https://david-dm.org/RentDynamics/rentdynamics-js
+[dev-dependency-image]: https://david-dm.org/RentDynamics/rentdynamics-js/dev-status.svg
+[dev-dependency-link]: https://david-dm.org/RentDynamics/rentdynamics-js?type=dev
+[peer-dependency-image]: https://david-dm.org/RentDynamics/rentdynamics-js/peer-status.svg
+[peer-dependency-link]: https://david-dm.org/RentDynamics/rentdynamics-js?type=peer
 [npm-version-image]: https://img.shields.io/npm/v/rentdynamics.svg
 [npm-version-link]: https://www.npmjs.com/package/rentdynamics
 [npm-license-image]: https://img.shields.io/npm/l/rentdynamics.svg
