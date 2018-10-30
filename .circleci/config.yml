@@ -33,4 +33,4 @@ jobs:
           path: ./coverage
 
       # upload coverage file to codecov
-      #- run: ./node_modules/.bin/codecov
+      run: ./node_modules/.bin/codecov
