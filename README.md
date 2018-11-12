@@ -14,7 +14,7 @@
 Include jsSHA and our CDN
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha.js"></script>
-<script src="https://cdn.rentdynamics.com/rentdynamics.latest.js"></script>
+<script src="https://cdnjs.rentdynamics.com/rentdynamics.latest.js"></script>
 ```
 ```js
 var options = {
