@@ -349,11 +349,14 @@ describe('getNonce', () => {
 
   test('should handle arrays of primitive values', () => {
     // arrange
+    let chance = new Chance();
     let payload = {
       orange: 5,
       blue: [1, 5, 2]
     };
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
     let formattedPayload = JSON.stringify(clientHelpers.formatPayload(payload));
     let timestamp = Date.now();
@@ -373,6 +376,7 @@ describe('getNonce', () => {
 
   test('should return hash of timestamp, url, payload and secret key', () => {
     // arrange
+    let chance = new Chance();
     let payload = {
       orange: 1,
       blue: {
@@ -381,6 +385,8 @@ describe('getNonce', () => {
       }
     };
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
     let formattedPayload = JSON.stringify(clientHelpers.formatPayload(payload));
     let timestamp = Date.now();
@@ -400,7 +406,10 @@ describe('getNonce', () => {
 
   test('should return hash of timestamp, url and secret key if no payload exists', () => {
     // arrange
+    let chance = new Chance();
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
     let timestamp = Date.now();
     let url = '/someUrlolz';
@@ -417,6 +426,29 @@ describe('getNonce', () => {
     expect(hashedNonce).toEqual(result);
   });
 
+  test('should return empty string if missing apiSecretKey', () => {
+    // arrange
+    let payload = {
+      orange: 1,
+      blue: {
+        red: "a  f  g",
+        pink: "b  t  g"
+      }
+    };
+    let options = new ClientOptions();
+    options.apiSecretKey = undefined;
+    let clientHelpers = new ClientHelpers(options);
+    let formattedPayload = JSON.stringify(clientHelpers.formatPayload(payload));
+    let timestamp = Date.now();
+    let url = '/someUrlolz';
+
+    // act
+    let result = clientHelpers.getNonce(timestamp, url, formattedPayload);
+
+    // assert
+    expect(result).toEqual('');
+  });
+
 });
 
 
@@ -424,8 +456,11 @@ describe('getHeaders', () => {
 
   test('should return authorization header if there is an authToken', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     options.authToken = 'akK9KL2';
     let clientHelpers = new ClientHelpers(options);
 
@@ -438,9 +473,12 @@ describe('getHeaders', () => {
 
   test('should not return authorization header if there isnt an authToken', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let options = new ClientOptions();
     options.authToken = '';
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
 
     // act
@@ -451,8 +489,11 @@ describe('getHeaders', () => {
 
   test('should return x-rd-api-key header', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
 
     // act
@@ -464,9 +505,12 @@ describe('getHeaders', () => {
 
   test('should return x-rd-api-nonce header', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let payload = { orange: 1, blue: 2 };
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
 
     // act
@@ -478,8 +522,11 @@ describe('getHeaders', () => {
 
   test('should return x-rd-timestamp header', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
 
     // act
@@ -491,8 +538,11 @@ describe('getHeaders', () => {
 
   test('should return Content-Type header', () => {
     // arrange
+    let chance = new Chance();
     let url = '/someUrlolz';
     let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
     let clientHelpers = new ClientHelpers(options);
 
     // act
@@ -501,6 +551,26 @@ describe('getHeaders', () => {
     // assert
     expect(result.get('Content-Type')).toBeDefined();
     expect(result.get('Content-Type')).toEqual('application/json');
+  });
+
+  test('should return empty headers if missing apiKey and apiSecretKey', () => {
+    // arrange
+    let url = '/someUrlolz';
+    let options = new ClientOptions();
+    options.apiKey = undefined;
+    options.apiSecretKey = undefined;
+    let clientHelpers = new ClientHelpers(options);
+
+    // act
+    let result = clientHelpers.getHeaders(url);
+    console.log(Object.keys(result));
+
+    // assert
+    expect(result.get('Authorization')).toEqual(null);
+    expect(result.get('x-rd-api-key')).toEqual(null);
+    expect(result.get('x-rd-api-nonce')).toEqual(null);
+    expect(result.get('x-rd-timestamp')).toEqual(null);
+    expect(result.get('Content-Type')).toEqual(null);
   });
 
 });
