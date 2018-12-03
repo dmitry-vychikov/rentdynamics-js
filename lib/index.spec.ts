@@ -563,7 +563,6 @@ describe('getHeaders', () => {
 
     // act
     let result = clientHelpers.getHeaders(url);
-    console.log(Object.keys(result));
 
     // assert
     expect(result.get('Authorization')).toEqual(null);
