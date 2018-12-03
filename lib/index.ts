@@ -67,11 +67,11 @@ export class Client {
 }
 
 export class ClientOptions {
-    public apiKey: string = '';
-    public apiSecretKey: string = '';
-    public authToken: string = '';
-    public development: boolean = false;
-    public service: string = '';
+    public apiKey?: string = undefined;
+    public apiSecretKey?: string = undefined;
+    public authToken?: string = undefined;
+    public development?: boolean = false;
+    public service?: string = undefined;
 }
 
 export class ClientHelpers {
@@ -116,32 +116,39 @@ export class ClientHelpers {
     }
 
     public getHeaders(endpoint: string, payload?: Object) {
-        let headers = new Headers();
-        if (typeof payload !== "undefined") {
-            payload = this.formatPayload(payload);
+        let headers = new Headers();  
+        if (this.options.apiKey && this.options.apiSecretKey) {
+          if (typeof payload !== "undefined") {
+                payload = this.formatPayload(payload);
+            }
+            let timestamp = Date.now();
+            let nonce = this.getNonce(timestamp, endpoint, JSON.stringify(payload));
+            if (this.options.authToken) {
+                headers.append('Authorization', 'TOKEN ' + this.options.authToken);
+            }
+            headers.append('x-rd-api-key', this.options.apiKey);
+            headers.append('x-rd-api-nonce', nonce);
+            headers.append('x-rd-timestamp', timestamp.toString());
+            headers.append('Content-Type', 'application/json');
+            return headers;
         }
-        let timestamp = Date.now();
-        let nonce = this.getNonce(timestamp, endpoint, JSON.stringify(payload));
-        if (this.options.authToken) {
-            headers.append('Authorization', 'TOKEN ' + this.options.authToken);
-        }
-        headers.append('x-rd-api-key', this.options.apiKey);
-        headers.append('x-rd-api-nonce', nonce);
-        headers.append('x-rd-timestamp', timestamp.toString());
-        headers.append('Content-Type', 'application/json');
         return headers;
     }
 
     public getNonce(timestamp: number, endpoint: string, payloadStr?: string) {
-        let nonceStr = timestamp + endpoint;
+        if (this.options.apiSecretKey) {
+            let nonceStr = timestamp + endpoint;
 
-        if (typeof payloadStr !== 'undefined') {
-            nonceStr += payloadStr;
-        }
-        let shaObj = new jsSHA('SHA-1', 'TEXT');
-        shaObj.setHMACKey(this.options.apiSecretKey, 'TEXT');
-        shaObj.update(nonceStr);
+            if (typeof payloadStr !== 'undefined') {
+                nonceStr += payloadStr;
+            }
+            let shaObj = new jsSHA('SHA-1', 'TEXT');
+            shaObj.setHMACKey(this.options.apiSecretKey, 'TEXT');
+            shaObj.update(nonceStr);
 
-        return shaObj.getHMAC('HEX');
+            return shaObj.getHMAC('HEX');
+        } else {
+            return '';
+      }
     }
 }
