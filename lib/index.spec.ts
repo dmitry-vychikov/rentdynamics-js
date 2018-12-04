@@ -590,6 +590,34 @@ describe('getBaseUrl', () => {
     expect(result).toEqual('https://api-dev.rentdynamics.com');
   });
 
+  test('should return custom url in development with developmentUrl', () => {
+    // arrange
+    let options = new ClientOptions();
+    options.development = true;
+    options.developmentUrl = 'https://my-new.site.com'
+    let clientHelpers = new ClientHelpers(options);
+
+    // act
+    let result = clientHelpers.getBaseUrl();
+
+    // assert
+    expect(result).toEqual(options.developmentUrl);
+  });
+
+  test('should return production url even when developmentUrl is passed in', () => {
+    // arrange
+    let options = new ClientOptions();
+    options.development = false;
+    options.developmentUrl = 'https://my-new.site.com'
+    let clientHelpers = new ClientHelpers(options);
+
+    // act
+    let result = clientHelpers.getBaseUrl();
+
+    // assert
+    expect(result).toEqual('https://api.rentdynamics.com');
+  });
+
   test('should return correct url in production', () => {
     // arrange
     let options = new ClientOptions();

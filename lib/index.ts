@@ -72,6 +72,7 @@ export class ClientOptions {
     public authToken?: string = undefined;
     public development?: boolean = false;
     public service?: string = undefined;
+    public developmentUrl?: string = undefined;
 }
 
 export class ClientHelpers {
@@ -108,8 +109,10 @@ export class ClientHelpers {
         return formattedPayload;
     }
 
-    public getBaseUrl(){
-        if (this.options.development) {
+    public getBaseUrl() {
+        if (this.options.development && this.options.developmentUrl) {
+            return this.options.developmentUrl;
+        } else if (this.options.development) {
             return 'https://api-dev.rentdynamics.com';
         }
         return 'https://api.rentdynamics.com';
