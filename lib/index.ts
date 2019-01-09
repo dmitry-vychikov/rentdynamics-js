@@ -1,54 +1,57 @@
 import jsSHA from 'jssha';
+import fetch from 'cross-fetch';
 
 
 export class Client {
 
     private helpers: ClientHelpers;
     private options: ClientOptions;
+    public _fetch: any;
 
     constructor(options: ClientOptions) {
         this.options = options;
         this.helpers = new ClientHelpers(options);
+        this._fetch = fetch;
     }
 
     public get(endpoint: string): Promise<any> {
-        let options:RequestInit = {};
+        let options: RequestInit = {};
         options.method = 'GET';
         options.headers = this.helpers.getHeaders(endpoint);
         let fullUrl = this.helpers.getBaseUrl() + endpoint;
-        return fetch(fullUrl, options).then((result: Response) => {
+        return this._fetch(fullUrl, options).then((result: Response) => {
           return result.ok ? result.json() : result;
         });
     }
 
     public put(endpoint: string, payload: object): Promise<any> {
-      let options:RequestInit = {};
+      let options: RequestInit = {};
       options.method = 'PUT';
       options.headers = this.helpers.getHeaders(endpoint, payload);
       options.body = JSON.stringify(payload);
       let fullUrl = this.helpers.getBaseUrl() + endpoint;
-      return fetch(fullUrl, options).then((result: Response) => {
+      return this._fetch(fullUrl, options).then((result: Response) => {
         return result.ok ? result.json() : result;
       });
     }
 
     public post(endpoint: string, payload: object): Promise<any> {
-      let options:RequestInit = {};
+      let options: RequestInit = {};
       options.method = 'POST';
       options.headers = this.helpers.getHeaders(endpoint, payload);
       options.body = JSON.stringify(payload);
       let fullUrl = this.helpers.getBaseUrl() + endpoint;
-      return fetch(fullUrl, options).then((result: Response) => {
+      return this._fetch(fullUrl, options).then((result: Response) => {
         return result.ok ? result.json() : result;
       });
     }
 
     public delete(endpoint: string): Promise<any> {
-      let options:RequestInit = {};
+      let options: RequestInit = {};
       options.method = 'DELETE';
       options.headers = this.helpers.getHeaders(endpoint);
       let fullUrl = this.helpers.getBaseUrl() + endpoint;
-      return fetch(fullUrl, options).then((result: Response) => {
+      return this._fetch(fullUrl, options).then((result: Response) => {
         return result.ok ? result.json() : result;
       });
     }
@@ -127,7 +130,7 @@ export class ClientHelpers {
     }
 
     public getHeaders(endpoint: string, payload?: Object) {
-        let headers = new Headers();  
+        let headers: any = {};
         if (this.options.apiKey && this.options.apiSecretKey) {
           if (typeof payload !== "undefined") {
                 payload = this.formatPayload(payload);
@@ -135,12 +138,12 @@ export class ClientHelpers {
             let timestamp = Date.now();
             let nonce = this.getNonce(timestamp, endpoint, JSON.stringify(payload));
             if (this.options.authToken) {
-                headers.append('Authorization', 'TOKEN ' + this.options.authToken);
+                headers['Authorization'] = 'TOKEN ' + this.options.authToken;
             }
-            headers.append('x-rd-api-key', this.options.apiKey);
-            headers.append('x-rd-api-nonce', nonce);
-            headers.append('x-rd-timestamp', timestamp.toString());
-            headers.append('Content-Type', 'application/json');
+            headers['x-rd-api-key'] = this.options.apiKey;
+            headers['x-rd-api-nonce'] = nonce;
+            headers['x-rd-timestamp'] = timestamp.toString();
+            headers['Content-Type'] = 'application/json';
             return headers;
         }
         return headers;

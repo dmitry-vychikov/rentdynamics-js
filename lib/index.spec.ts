@@ -1,17 +1,12 @@
 import { Client, ClientOptions, ClientHelpers } from "./index";
 import Chance from "chance";
 import jsSHA from "jssha";
-import "whatwg-fetch";
 
 
 describe('get', () => {
 
   test('get calls fetch with method GET - fail', () => {
-      // setup mock for fetch to avoid actual calls
-      const fakeFetch = jest.fn().mockResolvedValue({ok: false, json: () => { return {}; }});
-      window.fetch = fakeFetch;
-
-      // setup and configure chance
+       // setup and configure chance
       let chance = new Chance();
 
       // setup options for client
@@ -22,19 +17,16 @@ describe('get', () => {
       // arrange
       let rdClient = new Client(options);
       let endpoint = chance.string();
+      let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: false, json: () => { return {}; }});
 
       // act
       let response = rdClient.get(endpoint);
 
       // assert
-      expect(fakeFetch.mock.calls.length).toBe(1);
+      expect(spy.mock.calls.length).toBe(1);
   });
 
   test('get calls fetch with method GET - success', () => {
-    // setup mock for fetch to avoid actual calls
-    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {}; }});
-    window.fetch = fakeFetch;
-
     // setup and configure chance
     let chance = new Chance();
 
@@ -46,12 +38,13 @@ describe('get', () => {
     // arrange
     let rdClient = new Client(options);
     let endpoint = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {}; }});
 
     // act
     let response = rdClient.get(endpoint);
 
     // assert
-    expect(fakeFetch.mock.calls.length).toBe(1);
+    expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -60,10 +53,6 @@ describe('get', () => {
 describe('put', () => {
 
   test('put calls fetch with method PUT - fail', () => {
-      // setup mock for fetch to avoid actual calls
-      const fakeFetch = jest.fn().mockResolvedValue({ok: false, json: () => { return {}; }});
-      window.fetch = fakeFetch;
-
       // setup and configure chance
       let chance = new Chance();
 
@@ -76,19 +65,16 @@ describe('put', () => {
       let rdClient = new Client(options);
       let payload = {};
       let endpoint = chance.string();
+      let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: false, json: () => { return {}; }});
 
       // act
       let response = rdClient.put(endpoint, payload);
 
       // assert
-      expect(fakeFetch.mock.calls.length).toBe(1);
+      expect(spy.mock.calls.length).toBe(1);
   });
 
   test('put calls fetch with method PUT - success', () => {
-    // setup mock for fetch to avoid actual calls
-    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {}; }});
-    window.fetch = fakeFetch;
-
     // setup and configure chance
     let chance = new Chance();
 
@@ -101,12 +87,13 @@ describe('put', () => {
     let rdClient = new Client(options);
     let payload = {};
     let endpoint = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {}; }});
 
     // act
     let response = rdClient.put(endpoint, payload);
 
     // assert
-    expect(fakeFetch.mock.calls.length).toBe(1);
+    expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -115,10 +102,6 @@ describe('put', () => {
 describe('post', () => {
 
   test('post calls fetch with method POST - fail', () => {
-      // setup mock for fetch to avoid actual calls
-      const fakeFetch = jest.fn().mockResolvedValue({ok: false, json: () => { return {}; }});
-      window.fetch = fakeFetch;
-
       // setup and configure chance
       let chance = new Chance();
 
@@ -131,19 +114,16 @@ describe('post', () => {
       let rdClient = new Client(options);
       let payload = {};
       let endpoint = chance.string();
+      let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: false, json: () => { return {}; }});
 
       // act
       let response = rdClient.post(endpoint, payload);
 
       // assert
-      expect(fakeFetch.mock.calls.length).toBe(1);
+      expect(spy.mock.calls.length).toBe(1);
   });
 
   test('post calls fetch with method POST - success', () => {
-    // setup mock for fetch to avoid actual calls
-    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {}; }});
-    window.fetch = fakeFetch;
-
     // setup and configure chance
     let chance = new Chance();
 
@@ -156,12 +136,13 @@ describe('post', () => {
     let rdClient = new Client(options);
     let payload = {};
     let endpoint = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {}; }});
 
     // act
     let response = rdClient.post(endpoint, payload);
 
     // assert
-    expect(fakeFetch.mock.calls.length).toBe(1);
+    expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -170,10 +151,6 @@ describe('post', () => {
 describe('delete', () => {
 
   test('delete calls fetch with method DELETE - fail', () => {
-      // setup mock for fetch to avoid actual calls
-      const fakeFetch = jest.fn().mockResolvedValue({ok: false, json: () => { return {}; }});
-      window.fetch = fakeFetch;
-
       // setup and configure chance
       let chance = new Chance();
 
@@ -185,19 +162,16 @@ describe('delete', () => {
       // arrange
       let rdClient = new Client(options);
       let endpoint = chance.string();
+      let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: false, json: () => { return {}; }});
 
       // act
       let response = rdClient.delete(endpoint);
 
       // assert
-      expect(fakeFetch.mock.calls.length).toBe(1);
+      expect(spy.mock.calls.length).toBe(1);
   });
 
   test('delete calls fetch with method DELETE - success', () => {
-    // setup mock for fetch to avoid actual calls
-    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {}; }});
-    window.fetch = fakeFetch;
-
     // setup and configure chance
     let chance = new Chance();
 
@@ -209,12 +183,13 @@ describe('delete', () => {
     // arrange
     let rdClient = new Client(options);
     let endpoint = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {}; }});
 
     // act
     let response = rdClient.delete(endpoint);
 
     // assert
-    expect(fakeFetch.mock.calls.length).toBe(1);
+    expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -223,10 +198,6 @@ describe('delete', () => {
 describe('login', () => {
 
   test('login calls', () => {
-      // setup mock for fetch to avoid actual calls
-      const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {token: 'asdf'}; }});
-      window.fetch = fakeFetch;
-
       // setup and configure chance
       let chance = new Chance();
 
@@ -239,12 +210,13 @@ describe('login', () => {
       let rdClient = new Client(options);
       let username = chance.string();
       let password = chance.string();
+      let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: false, json: () => { return {authToken: chance.string()}; }});
 
       // act
       let response = rdClient.login(username, password);
 
       // assert
-      expect(fakeFetch.mock.calls.length).toBe(1);
+      expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -253,10 +225,6 @@ describe('login', () => {
 describe('logout', () => {
 
   test('logout calls', () => {
-    // setup mock for fetch to avoid actual calls
-    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {token: 'asdf'}; }});
-    window.fetch = fakeFetch;
-
     // setup and configure chance
     let chance = new Chance();
 
@@ -268,14 +236,14 @@ describe('logout', () => {
 
     // arrange
     let rdClient = new Client(options);
-    let username = chance.string();
-    let password = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {authToken: null}; }});
 
     // act
     let response = rdClient.logout();
 
     // assert
-    expect(fakeFetch.mock.calls.length).toBe(1);
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls.length).toBe(1);
   });
 
 });
@@ -499,7 +467,7 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url);
 
     // assert
-    expect(result.get('Authorization')).toBeDefined();
+    expect(result['Authorization']).toBeDefined();
   });
 
   test('should not return authorization header if there isnt an authToken', () => {
@@ -515,7 +483,7 @@ describe('getHeaders', () => {
     // act
     let result = clientHelpers.getHeaders(url);
     // assert
-    expect(result.get('Authorization')).toBeNull();
+    expect(result['Authorization']).toBeUndefined();
   });
 
   test('should return x-rd-api-key header', () => {
@@ -531,7 +499,7 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url);
 
     // assert
-    expect(result.get('x-rd-api-key')).toBeDefined();
+    expect(result['x-rd-api-key']).toBeDefined();
   });
 
   test('should return x-rd-api-nonce header', () => {
@@ -548,7 +516,7 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url, payload);
 
     // assert
-    expect(result.get('x-rd-api-nonce')).toBeDefined();
+    expect(result['x-rd-api-nonce']).toBeDefined();
   });
 
   test('should return x-rd-timestamp header', () => {
@@ -564,7 +532,7 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url);
 
     // assert
-    expect(result.get('x-rd-timestamp')).toBeDefined();
+    expect(result['x-rd-timestamp']).toBeDefined();
   });
 
   test('should return Content-Type header', () => {
@@ -580,8 +548,8 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url);
 
     // assert
-    expect(result.get('Content-Type')).toBeDefined();
-    expect(result.get('Content-Type')).toEqual('application/json');
+    expect(result['Content-Type']).toBeDefined();
+    expect(result['Content-Type']).toEqual('application/json');
   });
 
   test('should return empty headers if missing apiKey and apiSecretKey', () => {
@@ -596,11 +564,11 @@ describe('getHeaders', () => {
     let result = clientHelpers.getHeaders(url);
 
     // assert
-    expect(result.get('Authorization')).toEqual(null);
-    expect(result.get('x-rd-api-key')).toEqual(null);
-    expect(result.get('x-rd-api-nonce')).toEqual(null);
-    expect(result.get('x-rd-timestamp')).toEqual(null);
-    expect(result.get('Content-Type')).toEqual(null);
+    expect(result['Authorization']).toEqual(undefined);
+    expect(result['x-rd-api-key']).toEqual(undefined);
+    expect(result['x-rd-api-nonce']).toEqual(undefined);
+    expect(result['x-rd-timestamp']).toEqual(undefined);
+    expect(result['Content-Type']).toEqual(undefined);
   });
 
 });
