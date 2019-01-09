@@ -1,6 +1,10 @@
 # Rent Dynamics JS Helpers Change Log
 
 
+## v0.3.0
+### Features
+ * Added a logout function
+
 ## v0.2.1
 ### Features
  * Updated getBaseUrl to work better when using your own local environment
