@@ -1,6 +1,10 @@
 # Rent Dynamics JS Helpers Change Log
 
 
+## v0.4.0
+### Features
+ * Updated the Network calls to work in a node environment
+
 ## v0.3.0
 ### Features
  * Added a logout function
