@@ -54,11 +54,12 @@ rdClient.get('/data').then((result: array | object) => {
 
 ## Values
 ### ClientOptions
- * `apiKey: string (default is '')`
- * `apiSecretKey: string (default is '')`
- * `authToken: string (default is '')`
+ * `apiKey: string (default is undefined)`
+ * `apiSecretKey: string (default is undefined)`
+ * `authToken: string (default is undefined)`
  * `development: boolean (default is false)`
- * `service: string (default is '')`
+ * `service: string (default is undefined)`
+ * `developmentUrl: string (default is undefined) (This will only be used if development is set to true)`
 
 ### Client (requires a ClientOptions to be passed in)
  * `get(endpoint: string): Promise<any>`
@@ -66,6 +67,7 @@ rdClient.get('/data').then((result: array | object) => {
  * `post(endpoint: string, payload: object): Promise<any>`
  * `delete(endpoint: string): Promise<any>`
  * `login(username: string, password: string): Promise<any>`
+ * `logout(): Promise<any>`
 
 ### Available Endpoints
  * /appointmentTimes/{communityGroupId}?appointmentDate=11/12/2018
@@ -73,6 +75,7 @@ rdClient.get('/data').then((result: array | object) => {
  ```javascript
  ["10:00 AM","10:15 AM","10:30 AM","10:45 AM","11:00 AM","11:15 AM","11:30 AM","11:45 AM","12:00 PM","12:15 PM","12:30 PM","12:45 PM","01:00 PM","01:15 PM","01:30 PM","01:45 PM","02:00 PM","02:15 PM","02:30 PM","02:45 PM","03:00 PM","03:15 PM","03:30 PM","03:45 PM","04:00 PM","04:15 PM","04:30 PM","04:45 PM","05:00 PM","05:15 PM","05:30 PM"]
 ```
+
 
 ## Testing
  * `npm test` > Runs all the tests and checks the code coverage.
