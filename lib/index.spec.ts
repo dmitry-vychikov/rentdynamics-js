@@ -250,6 +250,37 @@ describe('login', () => {
 });
 
 
+describe('logout', () => {
+
+  test('logout calls', () => {
+    // setup mock for fetch to avoid actual calls
+    const fakeFetch = jest.fn().mockResolvedValue({ok: true, json: () => { return {token: 'asdf'}; }});
+    window.fetch = fakeFetch;
+
+    // setup and configure chance
+    let chance = new Chance();
+
+    // setup options for client
+    let options = new ClientOptions();
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
+    options.authToken = chance.string();
+
+    // arrange
+    let rdClient = new Client(options);
+    let username = chance.string();
+    let password = chance.string();
+
+    // act
+    let response = rdClient.logout();
+
+    // assert
+    expect(fakeFetch.mock.calls.length).toBe(1);
+  });
+
+});
+
+
 describe('formatPayload', () => {
 
   test('should alphabetize items in dictionary', () => {

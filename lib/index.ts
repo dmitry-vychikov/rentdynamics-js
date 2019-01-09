@@ -64,6 +64,14 @@ export class Client {
       });
     }
 
+    public logout(): Promise<any> {
+      let endpoint = '/auth/logout';
+      return this.post(endpoint, {authToken: this.options.authToken}).then((res) => {
+        this.options.authToken = undefined;
+        return res;
+      });
+    }
+
 }
 
 export class ClientOptions {
