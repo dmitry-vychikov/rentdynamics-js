@@ -1,6 +1,10 @@
 # Rent Dynamics JS Helpers Change Log
 
 
+## v0.5.0
+### Features
+ * Updated the GET method to optionally take an object of query parameters
+
 ## v0.4.0
 ### Features
  * Updated the Network calls to work in a node environment
