@@ -47,6 +47,31 @@ describe('get', () => {
     expect(spy.mock.calls.length).toBe(1);
   });
 
+  test('get with parameters calls fetch with method GET - success', () => {
+    // setup and configure chance
+    let chance = new Chance();
+
+    // setup options for client
+    let options = new ClientOptions();
+    options.development = true;
+    options.apiKey = chance.string();
+    options.apiSecretKey = chance.string();
+
+    // arrange
+    let rdClient = new Client(options);
+    let endpoint = chance.string();
+    let spy = jest.spyOn(rdClient, '_fetch').mockResolvedValue({ok: true, json: () => { return {}; }});
+    let include = chance.string();
+    let parameters = {include: [include]};
+
+    // act
+    let response = rdClient.get(endpoint, parameters);
+
+    // assert
+    expect(spy.mock.calls.length).toBe(1);
+    expect(spy.mock.calls[0][0]).toEqual(`https://api-dev.rentdynamics.com${endpoint}?include=${include}`);
+  });
+
 });
 
 
@@ -628,6 +653,69 @@ describe('getBaseUrl', () => {
 
     // assert
     expect(result).toEqual('https://api.rentdynamics.com');
+  });
+
+});
+
+
+describe('stringifyParameters', () => {
+
+  test('should stringify basic parameters', () => {
+    // arrange
+    let options = new ClientOptions();
+    options.development = true;
+    let clientHelpers = new ClientHelpers(options);
+    let parameters = {
+      filters: {id: 10},
+      include: ['hobby'],
+      exclude: ['age'],
+      fields: ['id', 'name'],
+      orderBy: 'name',
+      page: 1,
+      pageSize: 20,
+      distinct: true
+    };
+
+    // act
+    let result = clientHelpers.stringifyParameters(parameters);
+
+    // assert
+    expect(result).toContain('filters=id=10');
+    expect(result).toContain('include=hobby');
+    expect(result).toContain('exclude=age');
+    expect(result).toContain('fields=id,name');
+    expect(result).toContain('orderBy=name');
+    expect(result).toContain('page=1');
+    expect(result).toContain('pageSize=20');
+    expect(result).toContain('distinct=true');
+  });
+
+  test('should stringify more complex filters', () => {
+    // arrange
+    let options = new ClientOptions();
+    options.development = true;
+    let clientHelpers = new ClientHelpers(options);
+    let parameters = {
+      filters: {
+        id: 10,
+        age: [20, 21, 22, 23, 24],
+        hobby: { id: 10 },
+        nullValue: null,
+        emptyArray: [],
+        emptySubObj: {id: null}
+      }
+    };
+
+    // act
+    let result = clientHelpers.stringifyParameters(parameters);
+
+    // assert
+    expect(result).toContain('id=10');
+    expect(result).toContain('age__in=20,21,22,23,24');
+    expect(result).toContain('hobby__id=10');
+    expect(result).not.toContain('nullValue');
+    expect(result).not.toContain('emptyArray');
+    expect(result).not.toContain('emptySubObj');
   });
 
 });

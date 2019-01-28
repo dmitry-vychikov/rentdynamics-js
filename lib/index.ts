@@ -14,11 +14,11 @@ export class Client {
         this._fetch = fetch;
     }
 
-    public get(endpoint: string): Promise<any> {
+    public get(endpoint: string, parameters: object = {}): Promise<any> {
         let options: RequestInit = {};
         options.method = 'GET';
         options.headers = this.helpers.getHeaders(endpoint);
-        let fullUrl = this.helpers.getBaseUrl() + endpoint;
+        let fullUrl = this.helpers.getBaseUrl() + endpoint + this.helpers.stringifyParameters(parameters);
         return this._fetch(fullUrl, options).then((result: Response) => {
           return result.ok ? result.json() : result;
         });
@@ -165,4 +165,77 @@ export class ClientHelpers {
             return '';
       }
     }
+
+    public stringifyParameters(object: any): string {
+      let results = [];
+
+      if (object.filters && this.stringifyFilters(object.filters))
+        results.push(`filters=${this.stringifyFilters(object.filters)}`);
+
+      if (object.include && object.include.length)
+        results.push(`include=${object.include.join(',')}`);
+
+      if (object.exclude && object.exclude.length)
+        results.push(`exclude=${object.exclude.join(',')}`);
+
+      if (object.fields && object.fields.length)
+        results.push(`fields=${object.fields.join(',')}`);
+
+      if (object.orderBy)
+        results.push(`orderBy=${object.orderBy}`);
+
+      if (object.page)
+        results.push(`page=${object.page}`);
+
+      if (object.pageSize)
+        results.push(`pageSize=${object.pageSize}`);
+
+      if (object.distinct)
+        results.push(`distinct=true`);
+
+      return results.join('&') ? `?${results.join('&')}` : '';
+    }
+
+    private mapKeyValuePairs(key: string, value: any): string[] {
+      let results: string[] = [];
+
+      if (Array.isArray(value)) {
+        if (value.length)
+          results.push(`${key}__in=${value.join(',')}`)
+        return results;
+      }
+
+      if (value !== null && typeof value === 'object') {
+        for (var filterValKey in value) {
+          let result: string[];
+
+          result = this.mapKeyValuePairs(`${key}__${filterValKey}`, value[filterValKey]);
+
+          if (result && result.length)
+            results.push(result.join('|'));
+        }
+        return results;
+      }
+
+      if (value !== null && value !== undefined && value !== '') {
+        results.push(`${key}=${value}`);
+        return results;
+      }
+
+      return results;
+    }
+
+    private stringifyFilters(filter: {[key: string]: any}): string {
+      let results: string[] = [];
+
+      for (var key in filter) {
+        let result: string[] = this.mapKeyValuePairs(key, filter[key]);
+
+        if (result && result.length)
+          results.push(result.join('|'));
+      }
+
+      return results.join('|');
+    }
+
 }
