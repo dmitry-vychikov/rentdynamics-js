@@ -1,6 +1,6 @@
 import jsSHA from 'jssha';
-import fetch from 'cross-fetch';
 
+declare var global: any;
 
 export class Client {
 
@@ -11,7 +11,12 @@ export class Client {
     constructor(options: ClientOptions) {
         this.options = options;
         this.helpers = new ClientHelpers(options);
-        this._fetch = fetch;
+        if (global && global.fetch) {
+          this._fetch = global.fetch;
+        } else {
+          let crossFetch = require('cross-fetch');
+          this._fetch = crossFetch;
+        }
     }
 
     public get(endpoint: string, parameters: object = {}): Promise<any> {
