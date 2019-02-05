@@ -1,6 +1,10 @@
 # Rent Dynamics JS Helpers Change Log
 
 
+## v0.5.1
+### Fixes
+ * Fixed the way we access fetch to work on mobile applications
+
 ## v0.5.0
 ### Features
  * Updated the GET method to optionally take an object of query parameters
