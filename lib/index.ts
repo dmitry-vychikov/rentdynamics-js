@@ -12,7 +12,7 @@ export class Client {
         this.options = options;
         this.helpers = new ClientHelpers(options);
         if (global && global.fetch) {
-          this._fetch = global.fetch;
+          this._fetch = global.fetch.bind(global);
         } else {
           let crossFetch = require('cross-fetch');
           this._fetch = crossFetch;
@@ -20,11 +20,12 @@ export class Client {
     }
 
     public get(endpoint: string, parameters: object = {}): Promise<any> {
+        let queryParams = this.helpers.stringifyParameters(parameters);
         let options: RequestInit = {};
         options.method = 'GET';
-        options.headers = this.helpers.getHeaders(endpoint);
-        let fullUrl = this.helpers.getBaseUrl() + endpoint + this.helpers.stringifyParameters(parameters);
-        return this._fetch(fullUrl, options).then((result: Response) => {
+        options.headers = this.helpers.getHeaders(endpoint + queryParams);
+        let fullUrl = this.helpers.getBaseUrl() + endpoint + queryParams;
+        return this._fetch(fullUrl.replace(/\|/g, '%7C'), options).then((result: Response) => {
           return result.ok ? result.json() : result;
         });
     }
