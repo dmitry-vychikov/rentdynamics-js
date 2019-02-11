@@ -1,6 +1,10 @@
 # Rent Dynamics JS Helpers Change Log
 
 
+## v0.5.2
+### Fixes
+ * Fixed ReferenceError in our constructor
+
 ## v0.5.1
 ### Fixes
  * Fixed the way we access fetch to work on mobile applications
