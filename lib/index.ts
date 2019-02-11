@@ -11,7 +11,7 @@ export class Client {
     constructor(options: ClientOptions) {
         this.options = options;
         this.helpers = new ClientHelpers(options);
-        if (global && global.fetch) {
+        if (typeof global !== "undefined" && global && global.fetch) {
           this._fetch = global.fetch.bind(global);
         } else {
           let crossFetch = require('cross-fetch');
