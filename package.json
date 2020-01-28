@@ -1,6 +1,6 @@
 {
   "name": "rentdynamics",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Package to help facilitate communicating with the Rent Dynamics API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

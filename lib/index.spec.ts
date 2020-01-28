@@ -655,6 +655,20 @@ describe('getBaseUrl', () => {
     expect(result).toEqual('https://api.rentdynamics.com');
   });
 
+  test('should return correct url when passing base url in options in production', () => {
+    // arrange
+    let options = new ClientOptions();
+    options.development = false;
+    options.baseUrl = 'https://api.rentplus.com';
+    let clientHelpers = new ClientHelpers(options);
+
+    // act
+    let result = clientHelpers.getBaseUrl();
+
+    //assert
+    expect(result).toEqual('https://api.rentplus.com');
+  });
+
 });
 
 
