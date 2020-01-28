@@ -90,6 +90,7 @@ export class ClientOptions {
     public development?: boolean = false;
     public service?: string = undefined;
     public developmentUrl?: string = undefined;
+    public baseUrl?: string = undefined;
 }
 
 export class ClientHelpers {
@@ -132,7 +133,11 @@ export class ClientHelpers {
         } else if (this.options.development) {
             return 'https://api-dev.rentdynamics.com';
         }
-        return 'https://api.rentdynamics.com';
+        if (this.options.baseUrl) {
+            return  this.options.baseUrl;
+        } else {
+            return 'https://api.rentdynamics.com';
+        }
     }
 
     public getHeaders(endpoint: string, payload?: Object) {
