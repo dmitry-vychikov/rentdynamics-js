@@ -60,6 +60,7 @@ rdClient.get('/data').then((result: array | object) => {
  * `development: boolean (default is false)`
  * `service: string (default is undefined)`
  * `developmentUrl: string (default is undefined) (This will only be used if development is set to true)`
+ * `baseUrl: string (default is undefined) (This will only be used if development is set to false)`
 
 ### Client (requires a ClientOptions to be passed in)
  * `get(endpoint: string): Promise<any>`
